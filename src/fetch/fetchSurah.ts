@@ -1,8 +1,8 @@
-import {useQuery} from '@tanstack/react-query';
 import api from '../../interceptor/apiInterceptor';
+import { useQuery } from "@tanstack/react-query"
 
 export function fetchSurah() {
-  const {data: surah, isLoading} = useQuery({
+  const { data: surah, isLoading } = useQuery({
     queryKey: ['surah'],
     queryFn: async function () {
       try {
@@ -15,5 +15,5 @@ export function fetchSurah() {
     },
   });
 
-  return {surah, isLoading};
+  return { surah, isLoading };
 }
