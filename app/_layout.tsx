@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -18,32 +18,32 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    ...FontAwesome.font,
+  const [fontsLoaded] = useFonts({
+    "monserrat-regular": require("@/assets/fonts/Montserrat-Regular.ttf"),
+    "monserrat-medium": require("@/assets/fonts/Montserrat-Medium.ttf"),
+    "monserrat-semiBold": require("@/assets/fonts/Montserrat-SemiBold.ttf"),
+    "monserrat-bold": require("@/assets/fonts/Montserrat-Bold.ttf"),
+    "monserrat-extraBold": require("@/assets/fonts/Montserrat-ExtraBold.ttf"),
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded]);
 
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return <RootLayoutNav onLayoutRootView={onLayoutRootView} />;
 }
 
-function RootLayoutNav() {
+function RootLayoutNav({ onLayoutRootView }: { onLayoutRootView: any }) {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView
+      style={{ flex: 1 }}
+      onLayout={onLayoutRootView}>
       <SafeAreaView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <Stack>

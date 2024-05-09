@@ -1,13 +1,32 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
-import { fetchSurah } from "./fetch/fetchSurah";
 import ListSurah from "./screens/components/ListSurah";
 import { useNavigation } from "expo-router";
+import api from "@/interceptor/apiInterceptor";
+import BismillahCard from "./screens/components/BismillahCard";
+import SearchBar from "./screens/components/Search";
+import WelcomeCard from "./screens/components/WelcomeCard";
 
 const Home = () => {
-  const navigation = useNavigation();
-  const { isLoading, surah } = fetchSurah();
+  const [surah, setSurah] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fethSurah = async () => {
+    try {
+      const res = await api.get("/surat");
+
+      setIsLoading(false);
+      setSurah(res.data.data);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fethSurah();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -24,10 +43,13 @@ const Home = () => {
           />
         </View>
       ) : (
-        <ListSurah
-          navigation={navigation}
-          surah={surah}
-        />
+        <>
+          <WelcomeCard />
+
+          <SearchBar />
+
+          <ListSurah surah={surah} />
+        </>
       )}
     </View>
   );

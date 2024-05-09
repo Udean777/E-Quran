@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { memo } from "react";
-import { Link, useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import Fonts from "@/constants/Fonts";
 
-const ListSurah = ({ surah }: { navigation: any; surah: any }) => {
+const ListSurah = ({ surah }: { surah: any }) => {
   const router = useRouter();
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      {surah.map((item: any, index: any) => (
+      {surah?.map((item: any, index: any) => (
         <View key={item.nomor}>
           <TouchableOpacity
             onPress={() =>
@@ -34,8 +35,9 @@ const ListSurah = ({ surah }: { navigation: any; surah: any }) => {
                   <Text
                     style={{
                       color: "#333",
-                      fontWeight: "400",
-                      fontSize: 20,
+                      // fontWeight: "400",
+                      // fontSize: 20,
+                      fontFamily: Fonts.medium,
                     }}>
                     {item.nomor}
                   </Text>
@@ -44,8 +46,9 @@ const ListSurah = ({ surah }: { navigation: any; surah: any }) => {
                 <View style={{ width: 200 }}>
                   <Text
                     style={{
-                      fontWeight: "900",
-                      fontSize: 17,
+                      // fontWeight: "900",
+                      // fontSize: 17,
+                      fontFamily: Fonts.bold,
                       color: "#333",
                     }}>
                     {item.namaLatin}
@@ -53,8 +56,9 @@ const ListSurah = ({ surah }: { navigation: any; surah: any }) => {
 
                   <Text
                     style={{
-                      fontWeight: "400",
-                      fontSize: 15,
+                      // fontWeight: "400",
+                      // fontSize: 15,
+                      fontFamily: Fonts.semiBold,
                       color: "#f29a00",
                     }}>
                     {item.tempatTurun} - {item.arti}
@@ -66,8 +70,9 @@ const ListSurah = ({ surah }: { navigation: any; surah: any }) => {
                 <Text
                   style={{
                     color: "#333",
-                    fontWeight: "bold",
+                    // fontWeight: "bold",
                     fontSize: 20,
+                    fontFamily: Fonts.bold,
                   }}>
                   {item.nama}
                 </Text>

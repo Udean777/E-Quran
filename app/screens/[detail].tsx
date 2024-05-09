@@ -1,25 +1,32 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { fetchDetailSurah } from "../fetch/fetchDetailSurah";
 import { ActivityIndicator, TouchableRipple } from "react-native-paper";
-import { fetchTafsir } from "../fetch/fetchTafsir";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import BottomSheetComp from "./components/BottomSheet";
 import ListDetailSurah from "./components/ListDetailSurah";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Audio } from "expo-av";
+import useDetailStore from "@/zustand/store";
 
 const Detail = () => {
   const { detail } = useLocalSearchParams<{ detail: any }>();
-  const { detailSurah, isLoading } = fetchDetailSurah(detail);
-  const { tafsirs, isLoadingTafsir } = fetchTafsir(detail);
-  const [tafsirData, setTafsirData] = useState<any>({});
-  const [selectedAyat, setSelectedAyat] = useState<any>(null);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const {
+    detailSurah,
+    fetchDetailSurah,
+    fetchTafsirs,
+    isLoading,
+    isLoadingTafsir,
+    isPlaying,
+    selectedAyat,
+    setIsPlaying,
+    setSound,
+    sound,
+    tafsirData,
+    tafsirs,
+    setTafsirData,
+  } = useDetailStore();
   const navigation = useNavigation();
-
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const snapPoints = useMemo(() => ["1%", "100%"], []);
 
@@ -38,7 +45,7 @@ const Detail = () => {
   }, [isLoadingTafsir, tafsirs]);
 
   const openBottomSheet = (ayat: any) => {
-    setSelectedAyat(ayat);
+    useDetailStore.setState({ selectedAyat: ayat });
     bottomSheetRef.current?.expand();
   };
 
@@ -68,6 +75,11 @@ const Detail = () => {
         }
       : undefined;
   }, [sound]);
+
+  useEffect(() => {
+    fetchDetailSurah(detail);
+    fetchTafsirs(detail);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
