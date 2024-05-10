@@ -5,22 +5,19 @@ import BottomSheet, {
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import { Divider } from "react-native-paper";
+import { useDetailStore } from "@/zustand/store";
 
 const BottomSheetComp = ({
   bottomSheetRef,
   snapPoints,
   styles,
-  detailSurah,
-  selectedAyat,
-  tafsirData,
 }: {
   bottomSheetRef: any;
   snapPoints: any;
   styles: any;
-  detailSurah: any;
-  selectedAyat: any;
-  tafsirData: any;
 }) => {
+  const { selectedAyat, detailSurah, tafsirData } = useDetailStore();
+
   return (
     <BottomSheet
       ref={bottomSheetRef}

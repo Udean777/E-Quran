@@ -2,23 +2,22 @@ import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Button } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { useDetailStore } from "@/zustand/store";
+import Fonts from "@/constants/Fonts";
 
 const ListDetailSurah = ({
   styles,
-  detailSurah,
   openBottomSheet,
   playSound,
-  isPlaying,
 }: {
   styles: any;
-  detailSurah: any;
   openBottomSheet: any;
   playSound: any;
-  isPlaying: any;
 }) => {
   const [isPlayingMap, setIsPlayingMap] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const { detailSurah } = useDetailStore();
 
   const toggleIsPlaying = (nomorAyat: any) => {
     setIsPlayingMap((prevPlayingMap: any) => ({
@@ -34,7 +33,7 @@ const ListDetailSurah = ({
           style={styles.cardContainer}
           key={surah.nomorAyat}>
           <View style={styles.cardTitle}>
-            <Text style={{ color: "#333" }}>
+            <Text style={{ color: "#333", fontFamily: Fonts.medium }}>
               {detailSurah.nomor}:{surah.nomorAyat}
             </Text>
           </View>
@@ -42,14 +41,19 @@ const ListDetailSurah = ({
           <Text style={styles.teksArab}>{surah.teksArab}</Text>
 
           <View style={{ gap: 10 }}>
-            <Text style={{ color: "#f29a00" }}>{surah.teksLatin}</Text>
-            <Text style={{ color: "#333" }}>{surah.teksIndonesia}</Text>
+            <Text style={{ color: "#f29a00", fontFamily: Fonts.semiBold }}>
+              {surah.teksLatin}
+            </Text>
+            <Text style={{ color: "#333", fontFamily: Fonts.medium }}>
+              {surah.teksIndonesia}
+            </Text>
           </View>
 
           <View style={styles.btnContainer}>
             <Button
               mode="outlined"
               textColor="#f29a00"
+              labelStyle={{ fontFamily: Fonts.semiBold }}
               style={{ flex: 1, borderColor: "#f29a00" }}
               onPress={() => openBottomSheet(surah.nomorAyat)}>
               Tafsir

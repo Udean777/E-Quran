@@ -1,13 +1,15 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, TouchableRipple } from "react-native-paper";
+import React, { memo, useEffect, useMemo, useRef } from "react";
+import { TouchableRipple } from "react-native-paper";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import BottomSheetComp from "./components/BottomSheet";
 import ListDetailSurah from "./components/ListDetailSurah";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Audio } from "expo-av";
-import useDetailStore from "@/zustand/store";
+import { useDetailStore } from "@/zustand/store";
+import Loading from "@/constants/Loading";
+import Fonts from "@/constants/Fonts";
 
 const Detail = () => {
   const { detail } = useLocalSearchParams<{ detail: any }>();
@@ -18,11 +20,9 @@ const Detail = () => {
     isLoading,
     isLoadingTafsir,
     isPlaying,
-    selectedAyat,
     setIsPlaying,
     setSound,
     sound,
-    tafsirData,
     tafsirs,
     setTafsirData,
   } = useDetailStore();
@@ -96,21 +96,17 @@ const Detail = () => {
       </View>
 
       {isLoading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator
-            size={"large"}
-            color={"#f29a00"}
-          />
-        </View>
+        <Loading />
       ) : (
         <>
           <View style={styles.container}>
             <View>
-              <Text style={{ fontSize: 17, color: "#333", fontWeight: "900" }}>
+              <Text
+                style={{ fontSize: 17, color: "#333", fontFamily: Fonts.bold }}>
                 {detailSurah.namaLatin} - {detailSurah.nama}
               </Text>
 
-              <Text style={{ color: "#f29a00", fontWeight: "400" }}>
+              <Text style={{ color: "#f29a00", fontFamily: Fonts.medium }}>
                 {detailSurah.arti} - {detailSurah.jumlahAyat} -{" "}
                 {detailSurah.tempatTurun}
               </Text>
@@ -120,7 +116,7 @@ const Detail = () => {
               <Text
                 style={{
                   color: "#333",
-                  fontWeight: "400",
+                  fontFamily: Fonts.medium,
                   fontSize: 20,
                 }}>
                 {detailSurah.nomor}
@@ -129,11 +125,9 @@ const Detail = () => {
           </View>
 
           <ListDetailSurah
-            detailSurah={detailSurah}
             openBottomSheet={openBottomSheet}
             styles={styles}
             playSound={playSound}
-            isPlaying={isPlaying}
           />
         </>
       )}
@@ -141,10 +135,7 @@ const Detail = () => {
       <BottomSheetComp
         bottomSheetRef={bottomSheetRef}
         snapPoints={snapPoints}
-        detailSurah={detailSurah}
-        selectedAyat={selectedAyat}
         styles={styles}
-        tafsirData={tafsirData}
       />
     </View>
   );
@@ -160,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   loading: { flex: 1, justifyContent: "center", alignItems: "center" },
-  headerTitle: { fontSize: 20, fontWeight: "bold", color: "#000" },
+  headerTitle: { fontSize: 20, fontFamily: Fonts.bold, color: "#000" },
   container: {
     marginVertical: 10,
     marginHorizontal: 10,
@@ -215,7 +206,7 @@ const styles = StyleSheet.create({
   teksArab: {
     color: "#333",
     fontSize: 17,
-    fontWeight: "900",
+    fontFamily: Fonts.bold,
     width: 250,
     alignSelf: "flex-end",
     marginVertical: 20,

@@ -1,38 +1,24 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect } from "react";
 import { ActivityIndicator } from "react-native-paper";
 import ListSurah from "./screens/components/ListSurah";
-import { useNavigation } from "expo-router";
-import api from "@/interceptor/apiInterceptor";
-import BismillahCard from "./screens/components/BismillahCard";
 import SearchBar from "./screens/components/Search";
 import WelcomeCard from "./screens/components/WelcomeCard";
+import { useSurahStore } from "@/zustand/store";
+import Fonts from "@/constants/Fonts";
 
 const Home = () => {
-  const [surah, setSurah] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const fethSurah = async () => {
-    try {
-      const res = await api.get("/surat");
-
-      setIsLoading(false);
-      setSurah(res.data.data);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, fetchSurah } = useSurahStore();
 
   useEffect(() => {
-    fethSurah();
+    fetchSurah();
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.headerContainer}>
+    <View style={{ flex: 1, backgroundColor: "#fafafa" }}>
+      {/* <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Kumpulan Surah</Text>
-      </View>
+      </View> */}
 
       {isLoading ? (
         <View
@@ -48,7 +34,7 @@ const Home = () => {
 
           <SearchBar />
 
-          <ListSurah surah={surah} />
+          <ListSurah />
         </>
       )}
     </View>
@@ -66,7 +52,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: Fonts.bold,
     color: "#000",
     textAlign: "center",
   },

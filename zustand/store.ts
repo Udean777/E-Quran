@@ -20,8 +20,31 @@ interface DetailStore {
     setTafsirData: (tafsirData: any) => void;
 }
 
+type SurahState = {
+    surah: any[];
+    isLoading: boolean;
+    setSurah: (surah: any[]) => void;
+    setIsLoading: (isLoading: boolean) => void;
+    fetchSurah: () => void;
+}
 
-const useDetailStore = create<DetailStore>((set) => ({
+export const useSurahStore = create<SurahState>((set) => ({
+    surah: [],
+    isLoading: true,
+    setSurah: (surah: any[]) => set({ surah }),
+    setIsLoading: (isLoading: boolean) => set({ isLoading }),
+    fetchSurah: async () => {
+        try {
+            const res = await api.get("/surat");
+            set(state => ({ ...state, surah: res.data.data, isLoading: false }));
+        } catch (error) {
+            console.log("Error fetching surah", error);
+            set(state => ({ ...state, isLoading: false }));
+        }
+    }
+}))
+
+export const useDetailStore = create<DetailStore>((set) => ({
     detailSurah: null,
     tafsirs: [],
     tafsirData: {},
@@ -55,5 +78,3 @@ const useDetailStore = create<DetailStore>((set) => ({
     setDetailSurah: (detailSurah) => set({ detailSurah }),
     setTafsirData: (tafsirData) => set({ tafsirData }),
 }));
-
-export default useDetailStore;

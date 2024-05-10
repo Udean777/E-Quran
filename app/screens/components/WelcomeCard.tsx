@@ -23,10 +23,8 @@ const WelcomeCard = () => {
           borderRadius: 10,
           borderColor: "#fff",
         }}>
-        <Text style={{ color: "#fff", fontFamily: Fonts.bold }}>{dayNow}</Text>
-        <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 15 }}>
-          {dateNow}
-        </Text>
+        <Text style={styles.textDay}>{dayNow}</Text>
+        <Text style={styles.textDay}>{dateNow}</Text>
       </View>
     </View>
   );
@@ -50,6 +48,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#fff",
     fontFamily: Fonts.bold,
   },
+  textDay: { color: "#fff", fontFamily: Fonts.bold },
 });
 
 export default WelcomeCard;

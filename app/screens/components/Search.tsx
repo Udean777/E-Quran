@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { Searchbar, TextInput } from "react-native-paper";
+import Fonts from "@/constants/Fonts";
 
 const Search = () => {
   return (
@@ -8,7 +9,12 @@ const Search = () => {
       <Searchbar
         placeholder="Cari surah"
         value=""
-        style={{ backgroundColor: "#fff" }}
+        style={{
+          backgroundColor: "#fff",
+          borderWidth: 1,
+          borderColor: "#b2b2b2",
+        }}
+        inputStyle={{ fontFamily: Fonts.medium }}
       />
     </View>
   );

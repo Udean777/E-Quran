@@ -8,9 +8,11 @@ import {
 import React, { memo } from "react";
 import { useRouter } from "expo-router";
 import Fonts from "@/constants/Fonts";
+import { useSurahStore } from "@/zustand/store";
 
-const ListSurah = ({ surah }: { surah: any }) => {
+const ListSurah = () => {
   const router = useRouter();
+  const { surah } = useSurahStore();
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
